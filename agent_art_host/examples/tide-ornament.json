@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "title": "Tide ornament",
+  "description": "Four sparse splines; width and pressure interpolate along native wet-paint strokes. No silhouette fill.",
+  "width": 768,
+  "height": 360,
+  "parts": [
+    {
+      "id": "tidal-ink",
+      "path": "M0 0 H768 V360 H0 Z",
+      "color": [
+        0.1568627450980392,
+        0.3803921568627451,
+        0.4196078431372549
+      ],
+      "brush": "wet-paint",
+      "paint": {
+        "fill": false,
+        "strokes": [
+          {
+            "mode": "auto",
+            "points": [
+              {
+                "x": 72,
+                "y": 229,
+                "size": 5,
+                "pressure": 0.35
+              },
+              {
+                "x": 242,
+                "y": 175,
+                "size": 48,
+                "pressure": 0.9
+              },
+              {
+                "x": 451,
+                "y": 219,
+                "size": 62,
+                "pressure": 0.85
+              },
+              {
+                "x": 681,
+                "y": 174,
+                "size": 4,
+                "pressure": 0.3
+              }
+            ],
+            "color": [
+              0.5058823529411764,
+              0.6196078431372549,
+              0.6039215686274509
+            ]
+          },
+          {
+            "mode": "auto",
+            "points": [
+              {
+                "x": 85,
+                "y": 254,
+                "size": 3,
+                "pressure": 0.2
+              },
+              {
+                "x": 249,
+                "y": 210,
+                "size": 25,
+                "pressure": 0.9
+              },
+              {
+                "x": 437,
+                "y": 255,
+                "size": 39,
+                "pressure": 0.8
+              },
+              {
+                "x": 650,
+                "y": 211,
+                "size": 4,
+                "pressure": 0.3
+              }
+            ],
+            "color": [
+              0.1568627450980392,
+              0.3803921568627451,
+              0.4196078431372549
+            ]
+          },
+          {
+            "mode": "auto",
+            "points": [
+              {
+                "x": 119,
+                "y": 278,
+                "size": 2,
+                "pressure": 0.2
+              },
+              {
+                "x": 267,
+                "y": 246,
+                "size": 12,
+                "pressure": 0.85
+              },
+              {
+                "x": 423,
+                "y": 282,
+                "size": 18,
+                "pressure": 0.8
+              },
+              {
+                "x": 604,
+                "y": 250,
+                "size": 2,
+                "pressure": 0.2
+              }
+            ],
+            "color": [
+              0.09803921568627451,
+              0.27058823529411763,
+              0.3137254901960784
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "gold-thread",
+      "path": "M0 0 H768 V360 H0 Z",
+      "color": [
+        0.7607843137254902,
+        0.5529411764705883,
+        0.25098039215686274
+      ],
+      "brush": "wet-paint",
+      "paint": {
+        "fill": false,
+        "strokes": [
+          {
+            "mode": "cubic",
+            "points": [
+              {
+                "x": 150,
+                "y": 127,
+                "size": 3,
+                "pressure": 0.8,
+                "out": [
+                  265,
+                  81
+                ]
+              },
+              {
+                "x": 608,
+                "y": 120,
+                "size": 3,
+                "pressure": 0.8,
+                "in": [
+                  397,
+                  197
+                ]
+              }
+            ],
+            "color": [
+              0.7607843137254902,
+              0.5529411764705883,
+              0.25098039215686274
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

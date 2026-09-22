@@ -49,6 +49,9 @@ integrated. The new creative path is described below.
 
 ## Creative iteration
 
+See the [working examples and ergonomics](examples/README.md), or use the browser's
+Examples picker for painted foliage, a layered lantern, spline strokes and GPU motion.
+
 ### Official Comfy CLI
 
 The official `comfy-cli` can validate and execute these same nodes. Install it in

@@ -30,7 +30,9 @@ def region(path, tolerance=0.5):
         points = []
         for segment in contour:
             count = max(2, math.ceil(segment.length() / tolerance))
-            points.extend((p.real, p.imag) for p in (segment.point(t) for t in np.linspace(0, 1, count)))
+            # The next segment owns the shared endpoint. Evaluating both can create
+            # microscopic backtracking edges from floating-point roundoff.
+            points.extend((p.real, p.imag) for p in (segment.point(t) for t in np.linspace(0, 1, count, endpoint=False)))
         polygon = Polygon(points)
         if not polygon.is_valid:
             raise ValueError("Fill contours must not self-intersect; resolve Boolean geometry first")

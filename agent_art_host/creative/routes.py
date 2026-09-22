@@ -61,7 +61,20 @@ def install():
 
     @routes.get("/agent-art/example")
     async def example(request):
-        return web.json_response(json.loads((ROOT/"examples/painted-bookmark.json").read_text(encoding="utf-8")))
+        choices = {p.stem: p for p in (ROOT/"examples").glob("*.json")}
+        name = request.query.get("name", "painted-bookmark")
+        if name not in choices:
+            raise web.HTTPNotFound(text="Unknown example")
+        return web.json_response(json.loads(choices[name].read_text(encoding="utf-8")))
+
+    @routes.get("/agent-art/examples")
+    async def examples(request):
+        result = []
+        for path in sorted((ROOT/"examples").glob("*.json")):
+            source = json.loads(path.read_text(encoding="utf-8"))
+            result.append({"name": path.stem, "title": source.get("title", path.stem),
+                           "description": source.get("description", "")})
+        return web.json_response(result)
 
     @routes.get("/agent-art/capabilities")
     async def capabilities(request):

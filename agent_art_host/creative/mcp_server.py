@@ -1,9 +1,12 @@
 """MCP mutations return inline images automatically, including motion proofs."""
 import argparse
+from io import BytesIO
 import json
+import math
 from urllib.parse import urlencode
 
 from mcp.server.fastmcp import FastMCP, Image
+from PIL import Image as PILImage, ImageDraw
 from .client import Art
 
 
@@ -13,11 +16,26 @@ art = Art()
 
 def eyes(result):
     content = [json.dumps({key: result[key] for key in ("name", "revision", "observation", "cached")})]
-    # Main proofs first; avoid flooding model context with every unchanged layer.
-    for proof in result["images"]:
-        changed_part = proof["node"].startswith("inspect_") and proof["node"].replace("inspect_", "part_", 1) not in result["cached"]
-        if proof["node"] == "observe" or (changed_part and proof["filename"] == "trajectories.png"):
-            content.extend([proof["filename"], Image(data=art.image_bytes(proof), format="png")])
+    # The composed result comes first, regardless of Comfy's node execution order.
+    for proof in (p for p in result["images"] if p["node"] == "observe"):
+        content.extend([proof["filename"], Image(data=art.image_bytes(proof), format="png")])
+    changed = [p for p in result["images"] if p["filename"] == "trajectories.png"
+               and p["node"].replace("inspect_", "part_", 1) not in result["cached"]]
+    if changed:
+        columns = min(4, len(changed))
+        selected = changed[:12]
+        sheet = PILImage.new("RGB", (columns*240, math.ceil(len(selected)/columns)*204), "#17232b")
+        draw = ImageDraw.Draw(sheet)
+        for i, proof in enumerate(selected):
+            picture = PILImage.open(BytesIO(art.image_bytes(proof))).convert("RGB")
+            picture.thumbnail((240, 180))
+            x, y = (i%columns)*240, (i//columns)*204
+            sheet.paste(picture, (x+(240-picture.width)//2, y+(180-picture.height)//2))
+            draw.text((x+8, y+184), proof["node"].removeprefix("inspect_"), fill="white")
+        buffer = BytesIO()
+        sheet.save(buffer, format="PNG")
+        content.extend([f"Changed paint trajectories: {len(selected)} of {len(changed)} parts; full proofs remain in output.",
+                        Image(data=buffer.getvalue(), format="png")])
     return content
 
 
@@ -37,9 +55,15 @@ def noisemaker_effects(query: str = "", effect: str = "") -> dict | list:
 
 
 @server.tool()
-def example_art() -> dict:
-    """Get a working editable vector/paint/Noisemaker source document to adapt."""
-    return art.request("example")
+def list_examples() -> list:
+    """Discover editable examples of vector construction, spline painting and GPU processing."""
+    return art.request("examples")
+
+
+@server.tool()
+def example_art(name: str = "painted-bookmark") -> dict:
+    """Get a named example's editable source document to adapt with create_art."""
+    return art.request("example?"+urlencode({"name": name}))
 
 
 @server.tool()

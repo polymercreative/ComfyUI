@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "title": "Lagoon marbling",
+  "description": "Native Noisemaker noise, warp and palette: 24 frames with float master, sprite atlas and automatic motion proofs.",
+  "width": 512,
+  "height": 384,
+  "parts": [],
+  "processing": {
+    "effects": [
+      "synth/noise",
+      "filter/warp",
+      "filter/palette"
+    ],
+    "dsl": "search synth, filter\nnoise(scaleX: 64, scaleY: 70, seed: 7, octaves: 2, ridges: true).warp(strength: 10, scale: 1.5, seed: 11, speed: 1).palette(index: palette.blueSkies, offset: 18).write(o1)\nrender(o1)",
+    "output": "o1",
+    "times": [
+      0.0,
+      0.041666666666666664,
+      0.08333333333333333,
+      0.125,
+      0.16666666666666666,
+      0.20833333333333334,
+      0.25,
+      0.2916666666666667,
+      0.3333333333333333,
+      0.375,
+      0.4166666666666667,
+      0.4583333333333333,
+      0.5,
+      0.5416666666666666,
+      0.5833333333333334,
+      0.625,
+      0.6666666666666666,
+      0.7083333333333334,
+      0.75,
+      0.7916666666666666,
+      0.8333333333333334,
+      0.875,
+      0.9166666666666666,
+      0.9583333333333334
+    ],
+    "backend": "webgpu"
+  }
+}

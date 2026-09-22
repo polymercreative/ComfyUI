@@ -119,3 +119,9 @@ def test_failure_cancel_and_restart(renderer, tmp_path):
     assert renderer.process is None
     renderer.run(request)
     np.testing.assert_allclose(np.load(tmp_path/'frame-0000.npy'), values, atol=.001)
+def test_curved_region_shared_endpoints():
+    from agent_art_host.creative.geometry import region
+    from agent_art_host.examples.make_showcase import herb
+    for part in herb()['parts']:
+        if 'paint' in part:
+            assert region(part['path']).is_valid
