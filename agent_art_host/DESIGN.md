@@ -108,7 +108,9 @@ Verified: the fork runs API-driven custom fields, CPU growth and float exports;
 cache reuse, targeted invalidation and failure recovery pass. There are 68 passing
 focused upstream tests. See [execution evidence](EXECUTION.md) and [setup](README.md).
 
-Still to prove: document editing, native spline painting/fills, Noisemaker execution,
-SDF/vector conversions, external-process lifecycle and production packaging. libmypaint
-and Noisemaker are leading candidates, not completed integrations. Resolve backend
-selection, document storage and resource policies through real cross-module tasks.
+The first connected creative path now runs named SVG regions through native libmypaint
+and Noisemaker, with cached edits, inline MCP observations and motion proof exports.
+See [creative contracts and evidence](CREATIVE.md) for verified scope and limitations.
+Still to prove: richer fill strategies, large streaming sequences, SDF conversions,
+broader native-resource support and production packaging. Resolve remaining storage
+and resource policies through real cross-module tasks.

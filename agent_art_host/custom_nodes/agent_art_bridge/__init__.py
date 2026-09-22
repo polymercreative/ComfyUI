@@ -9,6 +9,8 @@ from agent_art.fields import Field, plane
 from agent_art.operations import constant_speed, growth_cpu
 from comfy_api.latest import ComfyExtension, io
 import folder_paths
+from agent_art_host.creative.nodes import NODES
+from agent_art_host.creative.routes import install
 
 
 ArtField = io.Custom("AGENT_ART_FIELD")
@@ -82,8 +84,9 @@ class InspectField(io.ComfyNode):
 
 class AgentArtExtension(ComfyExtension):
     async def get_node_list(self):
-        return [MaskField, GrowthCPU, InspectField]
+        return [MaskField, GrowthCPU, InspectField, *NODES]
 
 
 async def comfy_entrypoint():
+    install()
     return AgentArtExtension()

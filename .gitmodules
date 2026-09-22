@@ -1,0 +1,3 @@
+[submodule "agent_art_host/vendor/noisemaker"]
+	path = agent_art_host/vendor/noisemaker
+	url = https://github.com/noisefactorllc/noisemaker.git

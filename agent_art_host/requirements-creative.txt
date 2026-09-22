@@ -1,0 +1,5 @@
+skia-python==144.0.post2
+svgpathtools==1.8.0
+shapely==2.1.2
+playwright==1.63.0
+mcp==1.30.0
