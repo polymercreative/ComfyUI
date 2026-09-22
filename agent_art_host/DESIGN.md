@@ -35,6 +35,10 @@ art engines -> inspectable results -> revisions or exports.**
 - **Browser:** visual inspection, comparisons, overlays and progress. Agents must
   see the actual marks and intermediate results they are creating.
 
+Editable persistence is required; a separate document service is not prescribed.
+Choose storage through real editing tasks. Shared meaning is mandatory; shared
+implementation is not. Each new abstraction must make the next integration easier.
+
 ## Cooperating, optional modules
 
 | Module | Responsibility |
@@ -66,16 +70,18 @@ engines consume exports; UI layout and gameplay systems remain outside this tool
 3. Separate editable intent from derived results. Preserve curves, brush presets,
    dynamics, recipes and seeds. Generated fill strokes remain inspectable; explicitly
    bake them into editable strokes when needed. Revisions preserve unrelated work.
-4. Use ComfyUI's state infrastructure deliberately. Fingerprint external resources;
-   treat cached outputs as read-only. Painting/simulation checkpoints are derived
-   state, not substitutes for saved sources. Replay downstream state after relevant edits.
+4. Use ComfyUI's state infrastructure deliberately. Fingerprint relevant parts and
+   external resources, rather than invalidating everything on a whole-document revision.
+   Treat cached outputs as read-only. Painting/simulation checkpoints are derived
+   state, not substitutes for saved sources. Replay only affected dependencies.
 5. Adapters own native cleanup, cancellation cooperation and process failure handling.
    GPU residency, memory accounting and cross-engine transfers require explicit proofs.
 6. Preserve technical meaning: units, precision, channels, color space, alpha and
    transforms. Never silently normalize, resize, gamma-correct or premultiply data.
    Packing/atlas recipes include registration and decode contracts.
-7. Every useful edit returns visual evidence. Inspect full results, intended-size
-   crops and relevant diagnostics. Save variants and support returning to prior revisions.
+7. Visual evidence is part of completing a useful edit, not an optional debugging
+   step. Return full results, intended-size crops and relevant diagnostics. Save
+   variants and support returning to prior revisions.
 
 ## What earns production readiness
 
@@ -90,6 +96,13 @@ engines consume exports; UI layout and gameplay systems remain outside this tool
   establish correctness; visual review establishes artistic usefulness.
 
 ## Current evidence and open decisions
+
+Next milestone: one useful asset with a named region containing a hole, an algorithmic
+painted fill and a native processing stage. Revise the region and a style parameter,
+preserve unrelated work, inspect the regenerated marks, and export artwork plus a
+technical channel with checked decoding. Exercise cancellation and restart on that
+same workflow. This tests missing capabilities rather than re-proving the executor;
+it does not mandate this sequence for other projects.
 
 Verified: the fork runs API-driven custom fields, CPU growth and float exports;
 cache reuse, targeted invalidation and failure recovery pass. There are 68 passing
