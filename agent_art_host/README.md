@@ -1,5 +1,8 @@
 # Agent Art host
 
+Start with the [design](DESIGN.md): product goals, shared art surface, module
+boundaries, integration rules and production acceptance criteria.
+
 Working branch: `agent-art`. Upstream baseline: `b0f4b7b294ce482a2e071d9d762c133d38c7aa07`.
 Keep `upstream` pointing to Comfy-Org/ComfyUI and merge upstream changes here.
 The existing Agent Art package remains independently callable; this extension
