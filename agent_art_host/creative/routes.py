@@ -11,7 +11,7 @@ from aiohttp import web
 import folder_paths
 from server import PromptServer
 
-from .project import graph, revise, ROOT
+from .project import graph, revise, batch_revise, ROOT
 
 
 _lock = asyncio.Lock()
@@ -79,12 +79,15 @@ def install():
     @routes.get("/agent-art/capabilities")
     async def capabilities(request):
         return web.json_response({"version": 1, "source": "named SVG regions with even-odd fill",
+            "editing": {"batch": "ordered edits; one render and saved revision",
+                        "targets": ["part", "authored stroke", "control point"],
+                        "selectors": "id or zero-based index", "revision_required": True},
             "painting": {"engine": "libmypaint", "interpolation": ["linear", "quadratic", "cubic", "auto"],
                          "controls": ["size", "pressure", "flow", "opacity", "rotation", "speed"],
                          "brushes": ["pencil", "wet-paint", "default"], "native_presets": "preset_json"},
             "processing": {"engine": "Noisemaker", "program": "native DSL", "backends": ["webgpu", "webgl2"],
                            "input": "o0", "output": "o1", "precision": "native float targets; float32 readback"},
-            "observations": ["preview", "per-part proofs", "revision comparison", "contact sheet", "onion skin", "motion differences", "atlas", "raw float master"]})
+            "observations": ["preview", "per-part proofs", "revision comparison", "changed-area close-up", "contact sheet", "onion skin", "motion differences", "atlas", "raw float master"]})
 
     @routes.get("/agent-art/effects")
     async def effects(request):
@@ -112,10 +115,17 @@ def install():
                 current = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
                 if body.get("revision") is not None and (not current or body["revision"] != current["revision"]):
                     raise web.HTTPConflict(text="Source changed; reopen before editing")
+                if sum(key in body for key in ("document", "changes", "edits")) != 1:
+                    raise ValueError("Provide exactly one of document, changes or edits")
                 if "document" in body:
                     source = body["document"]
                 elif current:
-                    source = revise(current["document"], body["changes"])
+                    if "edits" in body:
+                        if body.get("revision") is None:
+                            raise ValueError("Batch edits require the current revision")
+                        source = batch_revise(current["document"], body["edits"])
+                    else:
+                        source = revise(current["document"], body["changes"])
                 else:
                     raise ValueError("Create the document before editing")
                 prior = current["observation"]["directory"] if current else ""

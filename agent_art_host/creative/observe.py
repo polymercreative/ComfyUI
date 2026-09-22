@@ -71,6 +71,25 @@ def observe(frames, directory, source, metadata, previous=None, strokes=None):
         compare.thumbnail((1536, 720))
         compare.save(directory / "revision.png")
         visible.append("revision.png")
+        # Choose the most changed frame, including edits that affect only motion.
+        frame_index = int(np.argmax(np.sum(delta, axis=(1, 2, 3))))
+        frame_change = np.max(delta[frame_index], axis=2)
+        ys, xs = np.nonzero(frame_change > 1/255)
+        if len(xs):
+            box = (max(0, int(xs.min())-12), max(0, int(ys.min())-12),
+                   min(frames.shape[2], int(xs.max())+13), min(frames.shape[1], int(ys.max())+13))
+            crops = [backing(display(frame)).crop(box) for frame in (previous[frame_index], frames[frame_index])]
+            scale = min(2, 480/crops[0].width, 440/crops[0].height)
+            size = (max(1, round(crops[0].width*scale)), max(1, round(crops[0].height*scale)))
+            cell_width = max(180, size[0])
+            closeup = Image.new("RGB", (cell_width*2, size[1]+48), "#17232b")
+            draw = ImageDraw.Draw(closeup)
+            draw.text((8, 5), f"Changed area {box} | frame {frame_index+1}", fill="white")
+            for i, crop in enumerate(crops):
+                closeup.paste(crop.resize(size, Image.Resampling.LANCZOS), (i*cell_width+(cell_width-size[0])//2, 48))
+                draw.text((i*cell_width+8, 27), ("Previous", "Current")[i], fill="white")
+            closeup.save(directory / "changed-area.png")
+            visible.append("changed-area.png")
     if len(images) > 1:
         columns = min(4, len(images))
         atlas = Image.new("RGBA", (images[0].width*columns, images[0].height*math.ceil(len(images)/columns)))

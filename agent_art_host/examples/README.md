@@ -40,8 +40,9 @@ Proofs and measured timings are under ignored `output/showcase/`.
   reused 17 part renders, and returned the composite, comparison and one labeled
   trajectory overview in the same MCP call.
 - First authoring remains coordinate-heavy. The example construction helpers
-  remove repetition, but transforms, reusable groups and named stroke-point edits
-  are not yet first-class features. Stroke arrays currently need replacement.
+  remove repetition, but transforms and reusable groups are not yet first-class
+  features. Named stroke-point updates now use `batch_edit_art`; insertion and
+  removal still require replacing the containing array.
 - Paint needs deliberate brush selection: the pencil preset looked weak and
   blurred at broad sizes; wet paint gave coherent tapered ribbons.
 - Solid geometry, painted coverage and shader output can be combined without

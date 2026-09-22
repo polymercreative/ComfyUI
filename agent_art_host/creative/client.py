@@ -24,6 +24,9 @@ class Art:
     def edit(self, name, changes, revision=None):
         return self.request("edit", {"name": name, "changes": changes, "revision": revision})
 
+    def batch(self, name, edits, revision):
+        return self.request("edit", {"name": name, "edits": edits, "revision": revision})
+
     def open(self, name):
         return self.request("document/"+name)
 

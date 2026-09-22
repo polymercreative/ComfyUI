@@ -24,32 +24,37 @@
                 "x": 72,
                 "y": 229,
                 "size": 5,
-                "pressure": 0.35
+                "pressure": 0.35,
+                "id": "start"
               },
               {
                 "x": 242,
                 "y": 175,
                 "size": 48,
-                "pressure": 0.9
+                "pressure": 0.9,
+                "id": "swell"
               },
               {
                 "x": 451,
                 "y": 219,
                 "size": 62,
-                "pressure": 0.85
+                "pressure": 0.85,
+                "id": "bend"
               },
               {
                 "x": 681,
                 "y": 174,
                 "size": 4,
-                "pressure": 0.3
+                "pressure": 0.3,
+                "id": "end"
               }
             ],
             "color": [
               0.5058823529411764,
               0.6196078431372549,
               0.6039215686274509
-            ]
+            ],
+            "id": "crest"
           },
           {
             "mode": "auto",
@@ -58,32 +63,37 @@
                 "x": 85,
                 "y": 254,
                 "size": 3,
-                "pressure": 0.2
+                "pressure": 0.2,
+                "id": "start"
               },
               {
                 "x": 249,
                 "y": 210,
                 "size": 25,
-                "pressure": 0.9
+                "pressure": 0.9,
+                "id": "swell"
               },
               {
                 "x": 437,
                 "y": 255,
                 "size": 39,
-                "pressure": 0.8
+                "pressure": 0.8,
+                "id": "bend"
               },
               {
                 "x": 650,
                 "y": 211,
                 "size": 4,
-                "pressure": 0.3
+                "pressure": 0.3,
+                "id": "end"
               }
             ],
             "color": [
               0.1568627450980392,
               0.3803921568627451,
               0.4196078431372549
-            ]
+            ],
+            "id": "middle"
           },
           {
             "mode": "auto",
@@ -92,32 +102,37 @@
                 "x": 119,
                 "y": 278,
                 "size": 2,
-                "pressure": 0.2
+                "pressure": 0.2,
+                "id": "start"
               },
               {
                 "x": 267,
                 "y": 246,
                 "size": 12,
-                "pressure": 0.85
+                "pressure": 0.85,
+                "id": "swell"
               },
               {
                 "x": 423,
                 "y": 282,
                 "size": 18,
-                "pressure": 0.8
+                "pressure": 0.8,
+                "id": "bend"
               },
               {
                 "x": 604,
                 "y": 250,
                 "size": 2,
-                "pressure": 0.2
+                "pressure": 0.2,
+                "id": "end"
               }
             ],
             "color": [
               0.09803921568627451,
               0.27058823529411763,
               0.3137254901960784
-            ]
+            ],
+            "id": "trough"
           }
         ]
       }
@@ -145,7 +160,8 @@
                 "out": [
                   265,
                   81
-                ]
+                ],
+                "id": "start"
               },
               {
                 "x": 608,
@@ -155,14 +171,16 @@
                 "in": [
                   397,
                   197
-                ]
+                ],
+                "id": "end"
               }
             ],
             "color": [
               0.7607843137254902,
               0.5529411764705883,
               0.25098039215686274
-            ]
+            ],
+            "id": "accent"
           }
         ]
       }

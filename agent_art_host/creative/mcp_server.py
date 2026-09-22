@@ -83,6 +83,22 @@ def edit_art(name: str, changes: dict, revision: int) -> list:
 
 
 @server.tool()
+def batch_edit_art(name: str, edits: list[dict], revision: int) -> list:
+    """Apply a batch, render ONCE, and return images immediately. One saved revision.
+
+    Each edit is {part: id, values: {...}}, optionally targeting stroke and point
+    by id (preferred) or zero-based index. Values merge; unspecified fields remain.
+    Example: [{"part":"tidal-ink","stroke":"crest","point":"swell",
+               "values":{"y":150,"size":60}},
+              {"part":"gold-thread","stroke":"accent","values":{"color":[.7,.4,.2]}}].
+    Edits apply in order to a copy. Invalid targets, stale revisions or failed
+    rendering leave the saved document unchanged. Generated fill trajectories
+    must be baked into paint.strokes before individual point editing.
+    """
+    return eyes(art.batch(name, edits, revision))
+
+
+@server.tool()
 def open_art(name: str) -> list:
     """Read editable source and see current artwork without a separate eyes command."""
     result = art.open(name)

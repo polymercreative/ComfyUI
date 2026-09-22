@@ -35,6 +35,35 @@ diameter `size`, `pressure`, `flow`, `opacity`, `rotation` in degrees and `speed
 pixels/second. Flow and opacity multiply native dab opacity; native pressure mappings
 are retained. Opacity is not a separately isolated post-stroke compositing layer.
 
+### Batch iteration
+
+MCP `batch_edit_art(name, edits, revision)` and Python `Art.batch` target named
+parts, authored strokes and control points without replacing their surrounding
+arrays. Stroke and point `id` fields are optional; zero-based selectors also work
+for existing unnamed sources. `values` merges into the selected object.
+
+```python
+art.batch("tide-ornament", [
+    {"part": "tidal-ink", "stroke": "crest", "point": "swell",
+     "values": {"y": 168, "size": 56}},
+    {"part": "tidal-ink", "stroke": "middle", "point": "bend",
+     "values": {"y": 264, "size": 32}},
+], revision=current["revision"])
+```
+
+All edits apply in order to a private document copy before one Comfy submission.
+A later invalid target prevents the whole batch from being submitted. A stale
+revision or failed render leaves the saved source unchanged. Source publication
+remains in the existing edit endpoint; there is no additional transaction manager.
+Successful batches return the composed image, comparison, changed-area close-up,
+and a compact paint-trajectory overview through MCP. For motion, the close-up
+uses the most changed frame. No visible change means no close-up. These are
+completed-render receipts, not per-dab streaming previews.
+
+Generated fill trajectories must be baked into `paint.strokes` before individual
+editing. Batch editing currently merges existing targets; reusable components,
+attachments, transforms, point insertion and removal are separate future work.
+
 Fills generate seeded directional lanes intersected with the region. Size, spacing,
 angle, jitter, color variation and clean base coverage are independent controls.
 Final coverage clips paint, including overshooting spline/dab edges, to holes and

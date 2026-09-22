@@ -12,15 +12,17 @@ def engine_revision():
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT / "vendor/noisemaker", text=True).strip()
 
 
+def merge(target, patch):
+    for key, value in patch.items():
+        if isinstance(value, dict) and isinstance(target.get(key), dict):
+            merge(target[key], value)
+        else:
+            target[key] = deepcopy(value)
+
+
 def revise(source, changes):
     result = deepcopy(source)
     by_id = {part["id"]: part for part in result["parts"]}
-    def merge(target, patch):
-        for key, value in patch.items():
-            if isinstance(value, dict) and isinstance(target.get(key), dict):
-                merge(target[key], value)
-            else:
-                target[key] = deepcopy(value)
     for key, patch in changes.items():
         if key == "parts":
             for name, update in patch.items():
@@ -29,6 +31,39 @@ def revise(source, changes):
                 merge(by_id[name], update)
         else:
             result[key] = deepcopy(patch)
+    return result
+
+
+def batch_revise(source, edits):
+    """Apply ordered edits to a private copy; callers render and publish once."""
+    if not isinstance(edits, list) or not edits:
+        raise ValueError("Provide a nonempty edits list")
+    result = deepcopy(source)
+
+    def select(items, selector, kind):
+        if type(selector) is int and 0 <= selector < len(items):
+            return items[selector]
+        matches = [item for item in items if item.get("id") == selector] if isinstance(selector, str) else []
+        if len(matches) != 1:
+            raise ValueError(f"Expected one {kind} matching {selector!r}; found {len(matches)}")
+        return matches[0]
+
+    for index, edit in enumerate(edits):
+        try:
+            if not isinstance(edit, dict) or set(edit)-{"part", "stroke", "point", "values"}:
+                raise ValueError("An edit accepts part, stroke, point and values")
+            if not isinstance(edit.get("values"), dict) or not edit["values"]:
+                raise ValueError("values must be a nonempty object")
+            if "point" in edit and "stroke" not in edit:
+                raise ValueError("A point target needs a stroke")
+            target = select(result["parts"], edit["part"], "part")
+            if "stroke" in edit:
+                target = select(target.get("paint", {}).get("strokes", []), edit["stroke"], "authored stroke")
+            if "point" in edit:
+                target = select(target.get("points", []), edit["point"], "point")
+            merge(target, edit["values"])
+        except (ValueError, KeyError, TypeError) as error:
+            raise ValueError(f"Edit {index+1}: {error}") from error
     return result
 
 

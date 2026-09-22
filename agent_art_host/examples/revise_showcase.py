@@ -33,7 +33,7 @@ async def main():
             cached=[n for n in after['cached'] if n.startswith('part_')]
             assert 'part_glass' in cached and 'part_cap' not in cached
             images=[c for c in result.content if c.type=='image']
-            assert len(images)==3
+            assert len(images)>=3
             for i,image in enumerate(images):
                 data=base64.b64decode(image.data)
                 Image.open(BytesIO(data)).verify()

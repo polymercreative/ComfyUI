@@ -92,6 +92,10 @@ result = art.edit('painted-bookmark', {
 }, revision=current['revision'])
 ```
 
+For several localized changes, use `Art.batch(name, edits, revision)` or MCP
+`batch_edit_art`: named part/stroke/point edits render once and return visual
+feedback together. See [batch iteration](CREATIVE.md#batch-iteration).
+
 For agents, use the MCP entrypoint: its create/edit/open tools return **inline images**,
 not just filenames. Animated results automatically include a contact sheet, onion
 skin and frame-difference image. No separate observation tool call is needed.
@@ -107,12 +111,13 @@ effect parameter documentation. [Creative contracts](CREATIVE.md) describe sourc
 backend boundaries, practical limitations and exports.
 
 ```powershell
-./.venv/Scripts/python.exe -m pytest agent_art_host/tests/test_creative.py -q
+./.venv/Scripts/python.exe -m pytest agent_art_host/tests -q
 ./.venv/Scripts/python.exe -m agent_art_host.tests.prove_edit_loop
 ./.venv/Scripts/python.exe -m agent_art_host.tests.prove_browser
+./.venv/Scripts/python.exe -m agent_art_host.tests.prove_batch
 ```
 
-The latter two require the running host. They exercise real Comfy jobs, targeted
+The three live proofs require the running host. They exercise real Comfy jobs, targeted
 cache reuse, technical exports, actual MCP image content and browser editing.
 
 See [Execution and intermediate-state map](EXECUTION.md) for inspected source

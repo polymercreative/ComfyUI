@@ -139,6 +139,11 @@ def waves():
         point(150,127,3,.8,out=[265,81]),point(608,120,3,.8,**{"in":[397,197]})],"c28d40")])) )
     for p in parts:
         p['brush']='wet-paint'
+        for i,s in enumerate(p['paint']['strokes']):
+            s['id']=['crest','middle','trough'][i] if p['id']=='tidal-ink' else 'accent'
+            ids=['start','swell','bend','end'] if len(s['points'])==4 else ['start','end']
+            for pt,name in zip(s['points'],ids):
+                pt['id']=name
     return document("Tide ornament", "Four sparse splines; width and pressure interpolate along native wet-paint strokes. No silhouette fill.",768,360,parts)
 
 
