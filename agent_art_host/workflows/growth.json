@@ -1,0 +1,6 @@
+{
+  "mask": {"class_type": "SolidMask", "inputs": {"value": 1.0, "width": 97, "height": 61}},
+  "field": {"class_type": "AgentArtMaskField", "inputs": {"mask": ["mask", 0]}},
+  "growth": {"class_type": "AgentArtGrowthCPU", "inputs": {"mask": ["field", 0], "speed": 1.0, "seeds": "[[48,30]]"}},
+  "inspect": {"class_type": "AgentArtInspectField", "inputs": {"field": ["growth", 0]}}
+}
